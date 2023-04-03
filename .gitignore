@@ -1,2 +1,4 @@
 mcu-detection.cfg
 .DS_Store
+.vscode/
+.idea/
