@@ -1,14 +1,12 @@
 #!/bin/bash
 
-if [[ -e /dev/btt-octopus-11 ]]; then
-	echo "Installing Voron V0 btt-octopus-11 ..."
-	tail -n +2 /home/pi/printer_data/config/RatOS/templates/voron-v0.btt-octopus-11.printer.template.cfg > /home/pi/printer_data/config/printer.cfg
-	tail -n +2 /home/pi/printer_data/config/RatOS/templates/sensorless-homing-tmc2209.cfg > /home/pi/printer_data/config/sensorless-homing-tmc2209.cfg
-elif [[ -e /dev/btt-manta-m5p ]]; then
-	echo "[TODO] Installing Voron V0 /dev/btt-manta-m5p ..."
-	#tail -n +2 /home/pi/printer_data/config/RatOS/templates/voron-v0.btt-octopus-11.printer.template.cfg > /home/pi/printer_data/config/printer.cfg
-	#tail -n +2 /home/pi/printer_data/config/RatOS/templates/sensorless-homing-tmc2209.cfg > /home/pi/printer_data/config/sensorless-homing-tmc2209.cfg
-else
-	echo "Installing Voron V0 btt-skr-mini-e3-30 ..."
-	tail -n +2 /home/pi/printer_data/config/RatOS/templates/voron-v01-printer.template.cfg > /home/pi/printer_data/config/printer.cfg
-fi
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+source $SCRIPT_DIR/ratos-common.sh
+
+BOARD_NAME=btt-skr-mini-e3-30
+PRINTER_NAME="Voron V0.2"
+PRINTER_TEMPLATE="voron-v01"
+# no / yes / xy
+PRINTER_SENSORLESS_HOMING="yes"
+
+install_templates
