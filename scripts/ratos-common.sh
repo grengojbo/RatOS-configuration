@@ -166,3 +166,37 @@ pi  ALL=(ALL) NOPASSWD: /home/pi/printer_data/config/RatOS/scripts/change-hostna
 		$sudo cp --preserve=mode /tmp/031-ratos-change-hostname /etc/sudoers.d/031-ratos-change-hostname
 	fi
 }
+
+install_templates() 
+{
+	if [[ ! -e /dev/${BOARD_NAME} ]]; then
+		echo "[ERROR] Board ${BOARD_NAME} not found"
+		exit 1
+	fi
+
+	if [[ ! -f /home/pi/printer_data/config/RatOS/templates/${PRINTER_TEMPLATE}-printer.template.cfg ]]; then
+		echo "[ERROR] Template ${PRINTER_TEMPLATE}-printer.template.cfg not found"
+		exit 1
+	fi
+	echo "Installing ${PRINTER_NAME} template ${PRINTER_TEMPLATE}-printer.template.cfg to printer.cfg ..."
+	tail -n +2 /home/pi/printer_data/config/RatOS/templates/${PRINTER_TEMPLATE}-printer.template.cfg > /home/pi/printer_data/config/printer.cfg
+	
+	if [[ "${PRINTER_SENSORLESS_HOMING}" == "yes" ]]; then
+		echo "Installing template sensorless-homing-tmc2209.cfg ..."
+		tail -n +2 /home/pi/printer_data/config/RatOS/templates/sensorless-homing-tmc2209.cfg > /home/pi/printer_data/config/sensorless-homing-tmc2209.cfg
+	elif [[ "${PRINTER_SENSORLESS_HOMING}" == "xy" ]]; then
+		echo "Installing template sensorless-x-homing-tmc2209.cfg and sensorless-y-homing-tmc2209.cfg ..."
+		tail -n +2 /home/pi/printer_data/config/RatOS/templates/sensorless-x-homing-tmc2209.cfg > /home/pi/printer_data/config/sensorless-x-homing-tmc2209.cfg
+		tail -n +2 /home/pi/printer_data/config/RatOS/templates/sensorless-y-homing-tmc2209.cfg > /home/pi/printer_data/config/sensorless-y-homing-tmc2209.cfg
+	fi
+	
+	echo "Setting ${BOARD_NAME} ..."
+	sed -i "s/#[include RatOS/boards/#CUSTOM#/config.cfg]/[include RatOS/boards/${BOARD_NAME}/config.cfg]/g" /home/pi/printer_data/config/printer.cfg
+	if [ $? -eq 0 ] 
+	then
+		echo "Changed include board ${BOARD_NAME}"
+	else
+		echo "[ERROR] Is not changed include board ${BOARD_NAME}"
+		#exit 1
+	fi
+}
