@@ -191,7 +191,7 @@ install_templates()
 	fi
 	
 	echo "Setting ${BOARD_NAME} ..."
-	sed -i "s/#[include RatOS/boards/#CUSTOM#/config.cfg]/[include RatOS/boards/${BOARD_NAME}/config.cfg]/g" /home/pi/printer_data/config/printer.cfg
+	sed -i "s/#\[include RatOS\/boards\/CUSTOM\/config.cfg\]/\[include RatOS\/boards\/${BOARD_NAME}\/config.cfg\]/g" /home/pi/printer_data/config/printer.cfg
 	if [ $? -eq 0 ] 
 	then
 		echo "Changed include board ${BOARD_NAME}"
