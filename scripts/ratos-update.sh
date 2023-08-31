@@ -55,3 +55,5 @@ install_hooks
 register_ratos_homing
 symlink_klippy_extensions
 symlink_moonraker_extensions
+# Bbox add
+install_obico

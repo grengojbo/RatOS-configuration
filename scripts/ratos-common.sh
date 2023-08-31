@@ -16,6 +16,36 @@ disable_modem_manager()
 	fi
 }
 
+install_obico()
+{
+	sudo="sudo"
+	if [ "$1" = "root" ]
+	then
+		sudo=""
+	fi
+	OBICO_DIR="/home/pi/moonraker-obico"
+	report_status "Installing obico..."
+
+	if [ ! -d "${OBICO_DIR}" ]; then
+		if [[ ! -e /etc/sudoers.d/040-moonraker-obico ]]
+		then
+			touch /tmp/040-moonraker-obico
+			cat << '#EOF' > /tmp/040-moonraker-obico
+pi  ALL=(ALL) NOPASSWD: /home/pi/moonraker-obico/install.sh
+#EOF
+		$sudo chown root:root /tmp/040-moonraker-obico
+		$sudo chmod 440 /tmp/040-moonraker-obico
+		$sudo cp --preserve=mode /tmp/040-moonraker-obico /etc/sudoers.d/040-moonraker-obico
+	fi
+
+	pushd "/home/pi" || return
+	# cd ~
+	git clone https://github.com/TheSpaghettiDetective/moonraker-obico.git
+	cd ${moonraker-obico}
+	# ./install.sh
+	popd || return
+}
+
 install_beacon()
 {
 	KLIPPER_DIR="/home/pi/klipper"
@@ -146,6 +176,7 @@ ensure_sudo_command_whitelisting()
 	cat << '#EOF' > /tmp/030-ratos-githooks
 pi  ALL=(ALL) NOPASSWD: /home/pi/printer_data/config/RatOS/scripts/ratos-update.sh
 pi  ALL=(ALL) NOPASSWD: /home/pi/printer_data/config/RatOS/scripts/klipper-mcu-update.sh
+pi  ALL=(ALL) NOPASSWD: /home/pi/printer_data/config/RatOS/scripts/moonraker-update.sh
 pi  ALL=(ALL) NOPASSWD: /home/pi/printer_data/config/RatOS/scripts/moonraker-update.sh
 #EOF
 

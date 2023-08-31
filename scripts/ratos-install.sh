@@ -47,3 +47,5 @@ install_dependencies
 ensure_sudo_command_whitelisting
 register_gcode_shell_command
 register_ratos_homing
+# Bbox add
+install_obico
