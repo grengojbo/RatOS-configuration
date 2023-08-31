@@ -36,14 +36,19 @@ pi  ALL=(ALL) NOPASSWD: /home/pi/moonraker-obico/install.sh
 		$sudo chown root:root /tmp/040-moonraker-obico
 		$sudo chmod 440 /tmp/040-moonraker-obico
 		$sudo cp --preserve=mode /tmp/040-moonraker-obico /etc/sudoers.d/040-moonraker-obico
-	fi
+		fi
 
-	pushd "/home/pi" || return
-	# cd ~
-	git clone https://github.com/TheSpaghettiDetective/moonraker-obico.git
-	cd ${moonraker-obico}
-	# ./install.sh
-	popd || return
+		pushd "/home/pi" || return
+		# cd ~
+		git clone https://github.com/TheSpaghettiDetective/moonraker-obico.git
+		cd ${moonraker-obico}
+		# ./install.sh
+		echo "[TODO] Run cd ${OBICO_DIR} && ./install.sh]"
+		popd || return
+	else
+		echo "obico: obico already installed, skipping..."
+		return
+	fi
 }
 
 install_beacon()
