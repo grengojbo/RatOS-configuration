@@ -41,7 +41,7 @@ pi  ALL=(ALL) NOPASSWD: /home/pi/moonraker-obico/install.sh
 		pushd "/home/pi" || return
 		# cd ~
 		git clone https://github.com/TheSpaghettiDetective/moonraker-obico.git
-		cd ${moonraker-obico}
+		cd ${OBICO_DIR}
 		# ./install.sh
 		echo "[TODO] Run cd ${OBICO_DIR} && ./install.sh]"
 		popd || return
