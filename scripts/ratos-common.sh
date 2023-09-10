@@ -41,7 +41,9 @@ pi  ALL=(ALL) NOPASSWD: /home/pi/moonraker-obico/install.sh
 		pushd "/home/pi" || return
 		# cd ~
 		git clone https://github.com/TheSpaghettiDetective/moonraker-obico.git
+		$sudo chown -R pi:pi ~/moonraker-obico
 		cd ${OBICO_DIR}
+		# git config --global --add safe.directory /home/pi/moonraker-obico
 		# ./install.sh
 		echo "[TODO] Run cd ${OBICO_DIR} && ./install.sh]"
 		popd || return
@@ -227,6 +229,7 @@ install_templates()
 	fi
 	
 	echo "Setting ${BOARD_NAME} ..."
+	# sed -i "s/X/Y/g" /file.txt
 	sed -i "s/#\[include RatOS\/boards\/CUSTOM\/config.cfg\]/\[include RatOS\/boards\/${BOARD_NAME}\/config.cfg\]/g" /home/pi/printer_data/config/printer.cfg
 	if [ $? -eq 0 ] 
 	then
